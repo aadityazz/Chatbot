@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Advanced Analytics Chatbot!</h1>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#send-button').click(function() {
+                var userMessage = $('#user-input').val();
+                $('#chat-box').append('<p class="user-message">' + userMessage + '</p>');
+                $('#user-input').val('');
+
+                $.post('/chat', { message: userMessage }, function(data) {
+                    var botResponse = data.response;
+                    $('#chat-box').append('<p class="bot-message">' + botResponse + '</p>');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
