@@ -50,11 +50,12 @@ def get_answer_from_external_resource(question):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    question_elements = soup.find_all("h3", {"strong": re.compile(r"^\d+:")})
+    question_elements = soup.find_all("h3")
 
-    for question_element in question_elements:
-        question_text = question_element.find("strong").get_text().strip()
-        question_text = re.sub(r"^\d+:", "", question_text)
+    for question_element in question_elements[:-1]:
+        #Debugg: print(question_element)
+        question_text = question_element.text
+        question_text = re.sub(r"^\d+:", "", question_text).strip()
 
         if question.lower() in question_text.lower():
             answer_element = question_element.find_next("p")
